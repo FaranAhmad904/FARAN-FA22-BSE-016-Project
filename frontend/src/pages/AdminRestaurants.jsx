@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import api from "../api";
 import "../styles/AdminDashboard.css";
 import LocationPicker from "../components/LocationPicker";
 
@@ -40,9 +40,7 @@ const AdminRestaurants = ({ onLogout, darkMode, onToggleTheme, isAdmin }) => {
   const fetchRestaurants = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:7000/api/admin/restaurants", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const res = await api.get("/api/admin/restaurants");
       setRestaurants(res.data);
     } catch (err) {
       console.error("Error fetching restaurants:", err);
@@ -102,8 +100,8 @@ const AdminRestaurants = ({ onLogout, darkMode, onToggleTheme, isAdmin }) => {
       }
 
       if (editingRestaurant) {
-        await axios.put(
-          `http://localhost:7000/api/admin/restaurants/${editingRestaurant._id}`,
+        await api.put(
+          `/api/admin/restaurants/${editingRestaurant._id}`,
           submitData,
           {
             headers: { 
@@ -114,8 +112,8 @@ const AdminRestaurants = ({ onLogout, darkMode, onToggleTheme, isAdmin }) => {
         );
         alert("✅ Restaurant updated successfully!");
       } else {
-        await axios.post(
-          "http://localhost:7000/api/admin/restaurants",
+        await api.post(
+          "/api/admin/restaurants",
           submitData,
           {
             headers: { 
@@ -151,9 +149,7 @@ const AdminRestaurants = ({ onLogout, darkMode, onToggleTheme, isAdmin }) => {
     if (!window.confirm("Are you sure you want to delete this restaurant?")) return;
     
     try {
-      await axios.delete(`http://localhost:7000/api/admin/restaurants/${id}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      await api.delete(`/api/admin/restaurants/${id}`);
       alert("✅ Restaurant deleted successfully!");
       fetchRestaurants();
     } catch (err) {

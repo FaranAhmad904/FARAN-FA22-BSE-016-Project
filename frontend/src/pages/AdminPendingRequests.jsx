@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../api";
 import "../styles/AdminDashboard.css";
 
 const AdminPendingRequests = ({ onLogout, darkMode, onToggleTheme }) => {
@@ -17,9 +17,7 @@ const AdminPendingRequests = ({ onLogout, darkMode, onToggleTheme }) => {
 
   const fetchPendingRestaurants = async () => {
     try {
-      const res = await axios.get("http://localhost:7000/api/admin/pending/restaurants", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const res = await api.get("/api/admin/pending/restaurants");
       if (res.data.success) {
         setPendingRestaurants(res.data.restaurants);
       }
@@ -32,9 +30,7 @@ const AdminPendingRequests = ({ onLogout, darkMode, onToggleTheme }) => {
 
   const fetchPendingDeals = async () => {
     try {
-      const res = await axios.get("http://localhost:7000/api/admin/pending/deals", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const res = await api.get("/api/admin/pending/deals");
       if (res.data.success) {
         setPendingDeals(res.data.deals);
       }
@@ -46,8 +42,8 @@ const AdminPendingRequests = ({ onLogout, darkMode, onToggleTheme }) => {
   const handleApproveRestaurant = async (id) => {
     if (!window.confirm("Approve this restaurant?")) return;
     try {
-      const res = await axios.put(
-        `http://localhost:7000/api/admin/restaurants/${id}/approve`,
+      const res = await api.put(
+        `/api/admin/restaurants/${id}/approve`,
         {},
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
@@ -63,8 +59,8 @@ const AdminPendingRequests = ({ onLogout, darkMode, onToggleTheme }) => {
   const handleRejectRestaurant = async (id) => {
     if (!window.confirm("Reject this restaurant?")) return;
     try {
-      const res = await axios.put(
-        `http://localhost:7000/api/admin/restaurants/${id}/reject`,
+      const res = await api.put(
+        `/api/admin/restaurants/${id}/reject`,
         {},
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
@@ -80,8 +76,8 @@ const AdminPendingRequests = ({ onLogout, darkMode, onToggleTheme }) => {
   const handleApproveDeal = async (restaurantId, dealId) => {
     if (!window.confirm("Approve this deal?")) return;
     try {
-      const res = await axios.put(
-        `http://localhost:7000/api/admin/restaurants/${restaurantId}/deals/${dealId}/approve`,
+      const res = await api.put(
+        `/api/admin/restaurants/${restaurantId}/deals/${dealId}/approve`,
         {},
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
@@ -97,8 +93,8 @@ const AdminPendingRequests = ({ onLogout, darkMode, onToggleTheme }) => {
   const handleRejectDeal = async (restaurantId, dealId) => {
     if (!window.confirm("Reject this deal?")) return;
     try {
-      const res = await axios.put(
-        `http://localhost:7000/api/admin/restaurants/${restaurantId}/deals/${dealId}/reject`,
+      const res = await api.put(
+        `/api/admin/restaurants/${restaurantId}/deals/${dealId}/reject`,
         {},
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );

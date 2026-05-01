@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../api";
 import "../styles/AdminDashboard.css";
 
 const AdminDashboard = ({ onLogout, darkMode, onToggleTheme }) => {
@@ -22,9 +22,7 @@ const AdminDashboard = ({ onLogout, darkMode, onToggleTheme }) => {
   const fetchDashboardStats = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:7000/api/admin/dashboard", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const res = await api.get("/api/admin/dashboard");
       setStats(res.data);
     } catch (err) {
       console.error("Error fetching dashboard stats:", err);

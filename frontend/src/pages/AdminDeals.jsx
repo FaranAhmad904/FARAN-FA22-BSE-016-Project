@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import api from "../api";
 import "../styles/AdminDashboard.css";
 
 const AdminDeals = ({ onLogout, darkMode, onToggleTheme }) => {
@@ -50,9 +50,7 @@ const AdminDeals = ({ onLogout, darkMode, onToggleTheme }) => {
 
   const fetchRestaurants = async () => {
     try {
-      const res = await axios.get("http://localhost:7000/api/admin/restaurants", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const res = await api.get("/api/admin/restaurants");
       setRestaurants(res.data);
     } catch (err) {
       console.error("Error fetching restaurants:", err);
@@ -62,9 +60,7 @@ const AdminDeals = ({ onLogout, darkMode, onToggleTheme }) => {
   const fetchDeals = async (restaurantId) => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:7000/api/admin/restaurants`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const res = await api.get(`/api/admin/restaurants`);
       const restaurant = res.data.find(r => r._id === restaurantId);
       if (restaurant) {
         setDeals(restaurant.deals || []);
@@ -134,8 +130,8 @@ const AdminDeals = ({ onLogout, darkMode, onToggleTheme }) => {
       const uploadFormData = new FormData();
       uploadFormData.append("image", selectedFile);
 
-      const res = await axios.post(
-        "http://localhost:7000/api/admin/upload-image",
+      const res = await api.post(
+        "/api/admin/upload-image",
         uploadFormData,
         {
           headers: {
@@ -236,8 +232,8 @@ const AdminDeals = ({ onLogout, darkMode, onToggleTheme }) => {
           return;
         }
         
-        const response = await axios.put(
-          `http://localhost:7000/api/admin/restaurants/${selectedRestaurant}/deals/${dealId}`,
+        const response = await api.put(
+          `/api/admin/restaurants/${selectedRestaurant}/deals/${dealId}`,
           dealData,
           {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
@@ -246,8 +242,8 @@ const AdminDeals = ({ onLogout, darkMode, onToggleTheme }) => {
         console.log("Update response:", response.data);
         alert("✅ Deal updated successfully!");
       } else {
-        const response = await axios.post(
-          `http://localhost:7000/api/admin/restaurants/${selectedRestaurant}/deals`,
+        const response = await api.post(
+          `/api/admin/restaurants/${selectedRestaurant}/deals`,
           dealData,
           {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
@@ -289,11 +285,8 @@ const AdminDeals = ({ onLogout, darkMode, onToggleTheme }) => {
 
     try {
       console.log(`Attempting to delete deal ${dealIdStr} from restaurant ${selectedRestaurant}`);
-      const response = await axios.delete(
-        `http://localhost:7000/api/admin/restaurants/${selectedRestaurant}/deals/${dealIdStr}`,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        }
+      const response = await api.delete(
+        `/api/admin/restaurants/${selectedRestaurant}/deals/${dealIdStr}`
       );
       console.log("Delete response:", response.data);
       alert("✅ Deal deleted successfully!");
