@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
+import { IMAGE_BASE_URL } from "../config/api";
 import "../styles/HomePage.css";
 
 const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
@@ -746,7 +747,7 @@ const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
                       }}>
                         {restaurant.image ? (
                           <img 
-                            src={restaurant.image.startsWith('http') ? restaurant.image : `http://localhost:7000${restaurant.image}`} 
+                            src={restaurant.image.startsWith('http') ? restaurant.image : `${IMAGE_BASE_URL}${restaurant.image}`} 
                             alt={restaurant.name}
                             style={{
                               width: "100%",
@@ -1026,7 +1027,7 @@ const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
                       <div className="restaurant-image-container">
                         {restaurant.image ? (
                           <img 
-                            src={restaurant.image.startsWith('http') ? restaurant.image : `http://localhost:7000${restaurant.image}`} 
+                            src={restaurant.image.startsWith('http') ? restaurant.image : `${IMAGE_BASE_URL}${restaurant.image}`} 
                             alt={restaurant.name}
                             className="restaurant-image"
                             onError={(e) => {

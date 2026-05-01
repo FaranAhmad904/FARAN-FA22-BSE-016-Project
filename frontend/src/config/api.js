@@ -34,4 +34,4 @@ export const API_ENDPOINTS = {
   AI_INSIGHTS: `${API_BASE_URL}/api/manager/ai-insights`
 };
 
-export const IMAGE_BASE_URL = API_BASE_URL;
+export const IMAGE_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:7000';
