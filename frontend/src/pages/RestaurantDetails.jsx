@@ -38,11 +38,6 @@ const RestaurantDetails = ({ onLogout, darkMode, onToggleTheme }) => {
     setLoading(true);
     try {
       const res = await api.get("/api/restaurants");
-      console.log('DEBUG Restaurant Data:', {
-        allRestaurants: res.data,
-        restaurantId,
-        foundRestaurant: res.data.find(r => r._id === restaurantId)
-      });
       const foundRestaurant = res.data.find(r => r._id === restaurantId);
       if (foundRestaurant) {
         setRestaurant(foundRestaurant);
@@ -474,23 +469,7 @@ const RestaurantDetails = ({ onLogout, darkMode, onToggleTheme }) => {
                   >
                     <div className="deal-image-container">
                       <img
-                        src={
-                          (() => {
-                            const imageUrl = deal.image ? 
-                              (deal.image.startsWith('http') ? deal.image : 
-                                (deal.image.startsWith('/') ? `${IMAGE_BASE_URL}${deal.image}` : `${IMAGE_BASE_URL}/${deal.image}`)) : 
-                              "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
-                            console.log('DEBUG Deal Image:', {
-                              dealImage: deal.image,
-                              dealObject: deal,
-                              IMAGE_BASE_URL,
-                              finalUrl: imageUrl,
-                              imageType: typeof deal.image,
-                              imageLength: deal.image ? deal.image.length : 'null'
-                            });
-                            return imageUrl;
-                          })()
-                        }
+                        src={deal.image ? (deal.image.startsWith('http') ? deal.image : (deal.image.startsWith('/') ? `${IMAGE_BASE_URL}${deal.image}` : `${IMAGE_BASE_URL}/${deal.image}`)) : "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"}
                         alt={deal.title}
                         className="deal-image"
                         onError={(e) => {
