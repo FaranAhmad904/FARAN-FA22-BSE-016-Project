@@ -66,8 +66,14 @@ const upload = multer({
 });
 
 app.use(express.json());
+const allowedOrigins = [
+  process.env.CORS_ORIGIN || "http://localhost:3000",
+  "http://localhost:3000",
+  "https://faran-fa-22-bse-016-project.vercel.app"
+];
+
 app.use(cors({ 
-  origin: process.env.CORS_ORIGIN || "http://localhost:3000", 
+  origin: allowedOrigins, 
   credentials: true 
 }));
 app.use(cookieParser());
