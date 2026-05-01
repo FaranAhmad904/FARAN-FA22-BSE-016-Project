@@ -315,8 +315,8 @@ const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
     setLoadingAI(true);
     try {
       // Save preferences
-      await axios.post(
-        "http://localhost:7000/api/user/preferences",
+      await api.post(
+        "/api/user/preferences",
         preferences,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
@@ -332,8 +332,8 @@ const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
           dietary: preferences.dietary,
           city: preferences.city || ""
         };
-        await axios.post(
-          "http://localhost:7001/api/customer/ai-recommend",
+        await api.post(
+          "/api/customer/ai-recommend",
           payload,
           {
             headers: {
@@ -360,7 +360,7 @@ const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
     setShowRecommendations(true);
     try {
       // Add timestamp to prevent caching
-      const res = await axios.get("http://localhost:7000/api/ai/recommendations", {
+      const res = await api.get("/api/ai/recommendations", {
         headers: { 
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           'Cache-Control': 'no-cache'
@@ -862,17 +862,16 @@ const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
                         <h3
                           onClick={async () => {
                             try {
-                              await axios.post(
-                                "http://localhost:7000/api/analytics/click",
-                                { restaurantId: restaurant._id },
-                                { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+                              await api.post(
+                                "/api/analytics/click",
+                                { restaurantId: restaurant._id }
                               );
                             } catch (err) {}
                             try {
                               const firstDeal = (restaurant.deals && restaurant.deals[0]) || null;
                               if (firstDeal) {
-                                await axios.post(
-                                  "http://localhost:7001/api/analytics/interaction",
+                                await api.post(
+                                  "/api/analytics/interaction",
                                   {
                                     userId: localStorage.getItem("userId"),
                                     deal_id: firstDeal._id || firstDeal.deal_id || firstDeal.title,
@@ -920,8 +919,8 @@ const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
                                       e.preventDefault();
                                       e.stopPropagation();
                                       try {
-                                        await axios.post(
-                                          "http://localhost:7001/api/user/deal-interaction",
+                                        await api.post(
+                                          "/api/user/deal-interaction",
                                           {
                                             userId: localStorage.getItem("userId"),
                                             deal_id: deal._id || deal.deal_id || deal.title,
@@ -958,17 +957,16 @@ const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
                           className="view-restaurant-btn"
                           onClick={async () => {
                             try {
-                              await axios.post(
-                                "http://localhost:7000/api/analytics/click",
-                                { restaurantId: restaurant._id },
-                                { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+                              await api.post(
+                                "/api/analytics/click",
+                                { restaurantId: restaurant._id }
                               );
                             } catch (err) {}
                             try {
                               const firstDeal = (restaurant.deals && restaurant.deals[0]) || null;
                               if (firstDeal) {
-                                await axios.post(
-                                  "http://localhost:7001/api/analytics/interaction",
+                                await api.post(
+                                  "/api/analytics/interaction",
                                   {
                                     userId: localStorage.getItem("userId"),
                                     deal_id: firstDeal._id || firstDeal.deal_id || firstDeal.title,
