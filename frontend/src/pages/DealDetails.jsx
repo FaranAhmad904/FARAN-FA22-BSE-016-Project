@@ -202,11 +202,27 @@ const DealDetails = ({ onLogout, darkMode, onToggleTheme }) => {
             <div>
               <div className="deal-detail-image-container">
                 <img
-                  src={deal.image ? (deal.image.startsWith('http') ? deal.image : `${IMAGE_BASE_URL}${deal.image}`) : "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=85"}
+                  src={
+                    (() => {
+                      const imageUrl = deal.image ? 
+                        (deal.image.startsWith('http') ? deal.image : `${IMAGE_BASE_URL}${deal.image}`) : 
+                        "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=85";
+                      console.log('DEBUG DealDetails Image:', {
+                        dealImage: deal.image,
+                        IMAGE_BASE_URL,
+                        finalUrl: imageUrl
+                      });
+                      return imageUrl;
+                    })()
+                  }
                   alt={deal.title}
                   className="deal-detail-image"
                   loading="eager"
                   decoding="async"
+                  onError={(e) => {
+                    console.error('DealDetails image failed to load:', e.target.src);
+                    e.target.src = "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=85";
+                  }}
                 />
                 {deal.dealType ? (
                   <div className="deal-badge">{deal.dealType.charAt(0).toUpperCase() + deal.dealType.slice(1)}</div>
