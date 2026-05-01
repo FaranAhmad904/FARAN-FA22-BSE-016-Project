@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import api from "../api";
 import "../styles/HomePage.css";
 
 const DealDetails = ({ onLogout, darkMode, onToggleTheme }) => {
@@ -21,10 +21,9 @@ const DealDetails = ({ onLogout, darkMode, onToggleTheme }) => {
   useEffect(() => {
     const recordView = async () => {
       try {
-        await axios.post(
-          "http://localhost:7000/api/analytics/view",
-          { restaurantId, dealId },
-          { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        await api.post(
+          "/api/analytics/view",
+          { restaurantId, dealId }
         );
       } catch (err) {}
     };
@@ -34,7 +33,7 @@ const DealDetails = ({ onLogout, darkMode, onToggleTheme }) => {
   const fetchDealDetails = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:7000/api/restaurants");
+      const res = await api.get("/api/restaurants");
       const foundRestaurant = res.data.find(r => r._id === restaurantId);
       if (foundRestaurant) {
         setRestaurant(foundRestaurant);
@@ -61,8 +60,8 @@ const DealDetails = ({ onLogout, darkMode, onToggleTheme }) => {
   const fetchDealReviews = async () => {
     setLoadingReviews(true);
     try {
-      const res = await axios.get(
-        `http://localhost:7000/api/user/reviews/restaurant/${restaurantId}/deal/${dealId}`
+      const res = await api.get(
+        `/api/user/reviews/restaurant/${restaurantId}/deal/${dealId}`
       );
       setDealReviews(res.data);
     } catch (err) {
@@ -85,12 +84,9 @@ const DealDetails = ({ onLogout, darkMode, onToggleTheme }) => {
     if (!rating) return alert("Please select a rating");
 
     try {
-      await axios.post(
-        "http://localhost:7000/api/user/reviews",
-        { restaurantId, dealId, rating: parseInt(rating), comment },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+      await api.post(
+        "/api/user/reviews",
+        { restaurantId, dealId, rating: parseInt(rating), comment }
       );
       alert("✅ Review submitted!");
       setReviewData({ rating: "", comment: "" });
@@ -104,12 +100,9 @@ const DealDetails = ({ onLogout, darkMode, onToggleTheme }) => {
 
   const handleAddFavorite = async () => {
     try {
-      await axios.post(
-        "http://localhost:7000/api/user/favorites",
-        { restaurantId, dealId },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+      await api.post(
+        "/api/user/favorites",
+        { restaurantId, dealId }
       );
       alert("✅ Added to favorites!");
     } catch (err) {
