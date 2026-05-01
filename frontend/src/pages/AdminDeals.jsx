@@ -146,7 +146,7 @@ const AdminDeals = ({ onLogout, darkMode, onToggleTheme }) => {
       let imageUrl = null;
       if (res.data.success) {
         imageUrl = res.data.imageUrl.startsWith('http') ? 
-          res.data.imageUrl : `${IMAGE_BASE_URL}${res.data.imageUrl}`;
+          res.data.imageUrl : (res.data.imageUrl.startsWith('/') ? `${IMAGE_BASE_URL}${res.data.imageUrl}` : `${IMAGE_BASE_URL}/${res.data.imageUrl}`);
         setImagePreview(imageUrl);
       }
       if (!imageUrl) {
@@ -656,7 +656,7 @@ const AdminDeals = ({ onLogout, darkMode, onToggleTheme }) => {
                     const dealId = deal._id ? (typeof deal._id === 'string' ? deal._id : deal._id.toString()) : null;
                     // Ensure we have a valid image URL - only show if image exists and is not empty
                     const imageUrl = deal.image && deal.image.trim() !== "" ? 
-                      (deal.image.startsWith('http') ? deal.image : `${IMAGE_BASE_URL}${deal.image}`) : null;
+                      (deal.image.startsWith('http') ? deal.image : (deal.image.startsWith('/') ? `${IMAGE_BASE_URL}${deal.image}` : `${IMAGE_BASE_URL}/${deal.image}`)) : null;
                     
                     return (
                       <div key={dealId || Math.random()} className="deal-card-admin">
