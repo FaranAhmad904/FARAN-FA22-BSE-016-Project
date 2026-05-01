@@ -1,0 +1,12 @@
+# Python environments
+venv/
+ai_service/venv/
+__pycache__/
+*.pyc
+
+# Node
+frontend/node_modules/
+node_modules/
+
+# Environment files
+.env
