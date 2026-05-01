@@ -143,8 +143,9 @@ const AdminDeals = ({ onLogout, darkMode, onToggleTheme }) => {
       );
 
       console.log("Image upload response:", res.data);
+      let imageUrl = null;
       if (res.data.success) {
-        const imageUrl = res.data.imageUrl.startsWith('http') ? 
+        imageUrl = res.data.imageUrl.startsWith('http') ? 
           res.data.imageUrl : `${IMAGE_BASE_URL}${res.data.imageUrl}`;
         setImagePreview(imageUrl);
       }
