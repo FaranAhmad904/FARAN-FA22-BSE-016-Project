@@ -136,7 +136,8 @@ const RestaurantDetails = ({ onLogout, darkMode, onToggleTheme }) => {
                   flexShrink: 0
                 }}>
                   <img 
-                    src={restaurant.image.startsWith('http') ? restaurant.image : `${IMAGE_BASE_URL}${restaurant.image}`} 
+                    src={restaurant.image.startsWith('http') ? restaurant.image : 
+                      (restaurant.image.startsWith('/') ? `${IMAGE_BASE_URL}${restaurant.image}` : restaurant.image)} 
                     alt={restaurant.name}
                     style={{ 
                       width: "100%", 
@@ -469,7 +470,7 @@ const RestaurantDetails = ({ onLogout, darkMode, onToggleTheme }) => {
                   >
                     <div className="deal-image-container">
                       <img
-                        src={deal.image || "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"}
+                        src={deal.image || `${IMAGE_BASE_URL}/default.jpg`}
                         alt={deal.title}
                         className="deal-image"
                       />
