@@ -472,7 +472,8 @@ const RestaurantDetails = ({ onLogout, darkMode, onToggleTheme }) => {
                         src={
                           (() => {
                             const imageUrl = deal.image ? 
-                              (deal.image.startsWith('http') ? deal.image : `${IMAGE_BASE_URL}${deal.image}`) : 
+                              (deal.image.startsWith('http') ? deal.image : 
+                                (deal.image.startsWith('/') ? `${IMAGE_BASE_URL}${deal.image}` : `${IMAGE_BASE_URL}/${deal.image}`)) : 
                               "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
                             console.log('DEBUG Deal Image:', {
                               dealImage: deal.image,

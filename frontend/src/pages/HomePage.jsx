@@ -747,7 +747,7 @@ const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
                       }}>
                         {restaurant.image ? (
                           <img 
-                            src={restaurant.image.startsWith('http') ? restaurant.image : `${IMAGE_BASE_URL}${restaurant.image}`} 
+                            src={restaurant.image.startsWith('http') ? restaurant.image : (restaurant.image.startsWith('/') ? `${IMAGE_BASE_URL}${restaurant.image}` : `${IMAGE_BASE_URL}/${restaurant.image}`)} 
                             alt={restaurant.name}
                             style={{
                               width: "100%",
@@ -1027,7 +1027,7 @@ const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
                       <div className="restaurant-image-container">
                         {restaurant.image ? (
                           <img 
-                            src={restaurant.image.startsWith('http') ? restaurant.image : `${IMAGE_BASE_URL}${restaurant.image}`} 
+                            src={restaurant.image.startsWith('http') ? restaurant.image : (restaurant.image.startsWith('/') ? `${IMAGE_BASE_URL}${restaurant.image}` : `${IMAGE_BASE_URL}/${restaurant.image}`)} 
                             alt={restaurant.name}
                             className="restaurant-image"
                             onError={(e) => {
