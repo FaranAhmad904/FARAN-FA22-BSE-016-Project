@@ -19,7 +19,7 @@ import RestaurantDetails from "./pages/RestaurantDetails";
 import DealDetails from "./pages/DealDetails";
 import SentimentAnalysis from "./pages/SentimentAnalysis";
 import SentimentRecommendations from "./pages/SentimentRecommendations";
-import axios from "axios";
+import api from "./api";
 
 function AppContent() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
@@ -34,12 +34,10 @@ function AppContent() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      axios.defaults.headers.Authorization = `Bearer ${token}`;
       setIsAuthenticated(true);
       // Check user role and admin status
       checkUserStatus();
     } else {
-      axios.defaults.headers.Authorization = null;
       setIsAuthenticated(false);
       setIsAdmin(false);
       setUserRole("customer");
@@ -54,9 +52,7 @@ function AppContent() {
 
   const checkUserStatus = async () => {
     try {
-      const res = await axios.get("http://localhost:7000/api/auth/profile", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const res = await api.get("/api/auth/profile");
       setIsAdmin(res.data.isAdmin || false);
       const role = res.data.role || (res.data.isAdmin ? 'admin' : 'customer');
       setUserRole(role);
@@ -74,7 +70,6 @@ function AppContent() {
       localStorage.setItem("role", role);
       setUserRole(role);
     }
-    axios.defaults.headers.Authorization = `Bearer ${token}`;
     setIsAuthenticated(true);
     // Check user status after login
     await checkUserStatus();
@@ -83,7 +78,6 @@ function AppContent() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
-    axios.defaults.headers.Authorization = null;
     setIsAuthenticated(false);
     setIsAdmin(false);
     setUserRole("customer");

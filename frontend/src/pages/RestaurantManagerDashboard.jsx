@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import api from "../api";
 import "../styles/AdminDashboard.css";
 
 const RestaurantManagerDashboard = ({ onLogout, darkMode, onToggleTheme }) => {
@@ -66,9 +66,7 @@ const RestaurantManagerDashboard = ({ onLogout, darkMode, onToggleTheme }) => {
 
   const fetchAnalytics = async () => {
     try {
-      const res = await axios.get("http://localhost:7000/api/manager/analytics", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const res = await api.get("/api/manager/analytics");
       if (res.data.success) {
         setAnalytics(res.data.analytics);
       }
@@ -83,9 +81,9 @@ const RestaurantManagerDashboard = ({ onLogout, darkMode, onToggleTheme }) => {
     try {
       const city = restaurant?.city || "";
       const url = city
-        ? `http://localhost:7001/api/manager/ai-insights?city=${encodeURIComponent(city)}`
-        : `http://localhost:7001/api/manager/ai-insights`;
-      const res = await axios.get(url);
+        ? `/api/manager/ai-insights?city=${encodeURIComponent(city)}`
+        : `/api/manager/ai-insights`;
+      const res = await api.get(url);
       if (res.data?.success) {
         setAiInsights(res.data.data);
       } else {
@@ -100,9 +98,7 @@ const RestaurantManagerDashboard = ({ onLogout, darkMode, onToggleTheme }) => {
 
   const fetchRestaurant = async () => {
     try {
-      const res = await axios.get("http://localhost:7000/api/manager/restaurant", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const res = await api.get("/api/manager/restaurant");
       if (res.data.success) {
         setRestaurant(res.data.restaurant);
         setRestaurantForm({
@@ -124,9 +120,7 @@ const RestaurantManagerDashboard = ({ onLogout, darkMode, onToggleTheme }) => {
 
   const fetchDeals = async () => {
     try {
-      const res = await axios.get("http://localhost:7000/api/manager/deals", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const res = await api.get("/api/manager/deals");
       if (res.data.success) {
         setDeals(res.data.deals || []);
       }
@@ -150,8 +144,8 @@ const RestaurantManagerDashboard = ({ onLogout, darkMode, onToggleTheme }) => {
 
       if (restaurant) {
         // Update existing restaurant
-        const res = await axios.put(
-          "http://localhost:7000/api/manager/restaurant",
+        const res = await api.put(
+        "/api/manager/restaurant",
           formData,
           { 
             headers: { 
@@ -167,8 +161,8 @@ const RestaurantManagerDashboard = ({ onLogout, darkMode, onToggleTheme }) => {
         }
       } else {
         // Register new restaurant
-        const res = await axios.post(
-          "http://localhost:7000/api/manager/restaurant/register",
+        const res = await api.post(
+        "/api/manager/restaurant/register",
           formData,
           { 
             headers: { 
@@ -193,8 +187,8 @@ const RestaurantManagerDashboard = ({ onLogout, darkMode, onToggleTheme }) => {
     try {
       const formData = new FormData();
       formData.append("image", file);
-      const res = await axios.post(
-        "http://localhost:7000/api/manager/upload-image",
+      const res = await api.post(
+        "/api/manager/upload-image",
         formData,
         {
           headers: {
@@ -242,8 +236,8 @@ const RestaurantManagerDashboard = ({ onLogout, darkMode, onToggleTheme }) => {
         endTime: dealForm.endTime || undefined
       };
 
-      const res = await axios.post(
-        "http://localhost:7000/api/manager/deals",
+      const res = await api.post(
+        "/api/manager/deals",
         dealData,
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
@@ -275,8 +269,8 @@ const RestaurantManagerDashboard = ({ onLogout, darkMode, onToggleTheme }) => {
   const handleDeleteDeal = async (dealId) => {
     if (!window.confirm("Are you sure you want to delete this deal?")) return;
     try {
-      const res = await axios.delete(
-        `http://localhost:7000/api/manager/deals/${dealId}`,
+      const res = await api.delete(
+        `/api/manager/deals/${dealId}`,
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
       if (res.data.success) {
