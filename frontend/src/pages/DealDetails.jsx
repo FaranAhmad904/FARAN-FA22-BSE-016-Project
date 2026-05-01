@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../api";
+import { IMAGE_BASE_URL } from "../config/api";
 import "../styles/HomePage.css";
 
 const DealDetails = ({ onLogout, darkMode, onToggleTheme }) => {
@@ -201,7 +202,7 @@ const DealDetails = ({ onLogout, darkMode, onToggleTheme }) => {
             <div>
               <div className="deal-detail-image-container">
                 <img
-                  src={deal.image || "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=85"}
+                  src={deal.image ? (deal.image.startsWith('http') ? deal.image : `${IMAGE_BASE_URL}${deal.image}`) : "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=85"}
                   alt={deal.title}
                   className="deal-detail-image"
                   loading="eager"
