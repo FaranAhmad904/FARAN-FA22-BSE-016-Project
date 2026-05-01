@@ -210,8 +210,11 @@ const DealDetails = ({ onLogout, darkMode, onToggleTheme }) => {
                         "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=85";
                       console.log('DEBUG DealDetails Image:', {
                         dealImage: deal.image,
+                        dealObject: deal,
                         IMAGE_BASE_URL,
-                        finalUrl: imageUrl
+                        finalUrl: imageUrl,
+                        imageType: typeof deal.image,
+                        imageLength: deal.image ? deal.image.length : 'null'
                       });
                       return imageUrl;
                     })()
