@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import api from "../api";
+import { IMAGE_BASE_URL } from "../config/api";
 import "../styles/AdminDashboard.css";
 
 const AdminDeals = ({ onLogout, darkMode, onToggleTheme }) => {
@@ -100,7 +101,7 @@ const AdminDeals = ({ onLogout, darkMode, onToggleTheme }) => {
       endTime: deal.endTime ? new Date(deal.endTime).toISOString().slice(0,16) : "",
       isActive: Boolean(deal.isActive)
     });
-    setImageOption(deal.image && deal.image.startsWith("http://localhost:7000/uploads") ? "upload" : "link");
+    setImageOption(deal.image && deal.image.startsWith(`${IMAGE_BASE_URL}/uploads`) ? "upload" : "link");
     setImagePreview(deal.image || null);
     setSelectedFile(null);
     setShowForm(true);
@@ -142,8 +143,11 @@ const AdminDeals = ({ onLogout, darkMode, onToggleTheme }) => {
       );
 
       console.log("Image upload response:", res.data);
-      const imageUrl = res.data.imageUrl;
-      
+      if (res.data.success) {
+        const imageUrl = res.data.imageUrl.startsWith('http') ? 
+          res.data.imageUrl : `${IMAGE_BASE_URL}${res.data.imageUrl}`;
+        setImagePreview(imageUrl);
+      }
       if (!imageUrl) {
         throw new Error("No image URL returned from server");
       }
@@ -650,7 +654,8 @@ const AdminDeals = ({ onLogout, darkMode, onToggleTheme }) => {
                     // Ensure we have a valid deal ID
                     const dealId = deal._id ? (typeof deal._id === 'string' ? deal._id : deal._id.toString()) : null;
                     // Ensure we have a valid image URL - only show if image exists and is not empty
-                    const imageUrl = deal.image && deal.image.trim() !== "" ? deal.image : null;
+                    const imageUrl = deal.image && deal.image.trim() !== "" ? 
+                      (deal.image.startsWith('http') ? deal.image : `${IMAGE_BASE_URL}${deal.image}`) : null;
                     
                     return (
                       <div key={dealId || Math.random()} className="deal-card-admin">

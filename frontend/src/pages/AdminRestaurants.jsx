@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import api from "../api";
+import { IMAGE_BASE_URL } from "../config/api";
 import "../styles/AdminDashboard.css";
 import LocationPicker from "../components/LocationPicker";
 
@@ -266,7 +267,7 @@ const AdminRestaurants = ({ onLogout, darkMode, onToggleTheme, isAdmin }) => {
                   />
                   {formData.image && (
                     <div className="image-preview">
-                      <img src={formData.image} alt="Restaurant preview" />
+                      <img src={formData.image.startsWith('http') ? formData.image : `${IMAGE_BASE_URL}${formData.image}`} alt="Restaurant preview" />
                       <p className="image-preview-text">Restaurant image preview</p>
                     </div>
                   )}
