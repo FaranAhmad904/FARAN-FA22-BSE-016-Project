@@ -24,8 +24,8 @@ def _add_cors_headers(resp):
     resp.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
     return resp
 
-MONGODB_URI = os.getenv("MONGODB_URI", "mongodb://localhost:27017")
-MONGODB_DB = os.getenv("MONGODB_DB", "resturantfinder")
+MONGODB_URI = os.getenv("MONGO_URL", "mongodb://localhost:27017")
+MONGODB_DB = os.getenv("MONGO_DB_NAME", "resturantfinder")
 COLL_USER_PREFERENCES = os.getenv("MONGODB_USER_PREFERENCES", "userpreferences")
 COLL_DEALS = os.getenv("MONGODB_DEALS", "deals")
 COLL_RESTAURANTS = os.getenv("MONGODB_RESTAURANTS", "restaurants")
