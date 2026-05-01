@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { IMAGE_BASE_URL } from "../config/api";
 import "../styles/HomePage.css";
 
 const RestaurantDetails = ({ onLogout, darkMode, onToggleTheme }) => {
@@ -135,7 +136,7 @@ const RestaurantDetails = ({ onLogout, darkMode, onToggleTheme }) => {
                   flexShrink: 0
                 }}>
                   <img 
-                    src={restaurant.image.startsWith('http') ? restaurant.image : `http://localhost:7000${restaurant.image}`} 
+                    src={restaurant.image.startsWith('http') ? restaurant.image : `${IMAGE_BASE_URL}${restaurant.image}`} 
                     alt={restaurant.name}
                     style={{ 
                       width: "100%", 
