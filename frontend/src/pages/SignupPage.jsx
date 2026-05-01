@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { API_ENDPOINTS } from "../config/api";
+import api from "../api";
 import "../styles/Auth.css";
 
 function SignupPage() {
@@ -14,7 +13,7 @@ function SignupPage() {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(API_ENDPOINTS.SIGNUP, { 
+      const res = await api.post("/api/auth/signup", { 
         name, 
         email, 
         password,

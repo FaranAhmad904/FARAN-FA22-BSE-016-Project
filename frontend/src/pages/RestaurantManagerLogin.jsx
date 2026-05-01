@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import api from "../api";
 import "../styles/Auth.css";
 
 function RestaurantManagerLogin({ onLogin }) {
@@ -11,7 +11,7 @@ function RestaurantManagerLogin({ onLogin }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:7000/api/auth/login", { email, password });
+      const res = await api.post("/api/auth/login", { email, password });
       if (res.data.success) {
         if (res.data.role !== "restaurantManager") {
           alert("❌ This login is only for restaurant manager accounts.");

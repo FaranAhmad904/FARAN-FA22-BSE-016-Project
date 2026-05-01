@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import api from "../api";
 import "../styles/Auth.css";
 
 function RestaurantManagerSignup() {
@@ -12,7 +12,7 @@ function RestaurantManagerSignup() {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:7000/api/auth/signup", { 
+      const res = await api.post("/api/auth/signup", { 
         name, 
         email, 
         password,
