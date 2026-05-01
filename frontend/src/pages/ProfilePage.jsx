@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../api";
 import "../styles/ProfilePage.css";
 
 const ProfilePage = ({ onLogout, darkMode, onToggleTheme }) => {
@@ -16,9 +16,7 @@ const ProfilePage = ({ onLogout, darkMode, onToggleTheme }) => {
     setLoading(true);
     try {
       console.log("Fetching favorites...");
-      const res = await axios.get("http://localhost:7000/api/user/favorites", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const res = await api.get("/api/user/favorites");
       console.log("Favorites data received:", res.data);
       if (Array.isArray(res.data)) {
         setFavorites(res.data);
@@ -36,9 +34,7 @@ const ProfilePage = ({ onLogout, darkMode, onToggleTheme }) => {
 
   const handleRemoveFavorite = async (dealId) => {
     try {
-      await axios.delete(`http://localhost:7000/api/user/favorites/${dealId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      await api.delete(`/api/user/favorites/${dealId}`);
       alert("✅ Removed from favorites!");
       fetchFavorites();
     } catch (err) {

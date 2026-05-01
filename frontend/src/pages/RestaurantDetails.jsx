@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { IMAGE_BASE_URL } from "../config/api";
+import api from "../api";
 import "../styles/HomePage.css";
 
 const RestaurantDetails = ({ onLogout, darkMode, onToggleTheme }) => {
@@ -19,8 +19,8 @@ const RestaurantDetails = ({ onLogout, darkMode, onToggleTheme }) => {
   useEffect(() => {
     const recordView = async () => {
       try {
-        await axios.post(
-          "http://localhost:7000/api/analytics/view",
+        await api.post(
+        "/api/analytics/view",
           { restaurantId },
           { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
         );
@@ -37,7 +37,7 @@ const RestaurantDetails = ({ onLogout, darkMode, onToggleTheme }) => {
   const fetchRestaurant = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:7000/api/restaurants");
+      const res = await api.get("/api/restaurants");
       const foundRestaurant = res.data.find(r => r._id === restaurantId);
       if (foundRestaurant) {
         setRestaurant(foundRestaurant);
@@ -457,8 +457,8 @@ const RestaurantDetails = ({ onLogout, darkMode, onToggleTheme }) => {
                     className="deal-card"
                     onClick={async () => {
                       try {
-                        await axios.post(
-                          "http://localhost:7000/api/analytics/click",
+                        await api.post(
+                          "/api/analytics/click",
                           { restaurantId, dealId: deal._id },
                           { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
                         );
@@ -527,10 +527,9 @@ const RestaurantDetails = ({ onLogout, darkMode, onToggleTheme }) => {
                           e.stopPropagation();
                           (async () => {
                             try {
-                              await axios.post(
-                                "http://localhost:7000/api/analytics/click",
-                                { restaurantId, dealId: deal._id },
-                                { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+                              await api.post(
+                                "/api/analytics/click",
+                                { restaurantId, dealId: deal._id }
                               );
                             } catch (err) {}
                             navigate(`/restaurant/${restaurantId}/deal/${deal._id}`);

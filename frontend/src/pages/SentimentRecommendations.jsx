@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../api";
 import "../styles/HomePage.css";
 
 export default function SentimentRecommendations({ darkMode, onToggleTheme }) {
@@ -67,9 +67,7 @@ export default function SentimentRecommendations({ darkMode, onToggleTheme }) {
       console.log('DEBUG: Fetching recommended deals...');
       console.log('DEBUG: Token available:', !!localStorage.getItem("token"));
       
-      const res = await axios.get('http://localhost:7000/api/deals/recommended', {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const res = await api.get('/api/deals/recommended');
       
       console.log('DEBUG: API Response status:', res.status);
       console.log('DEBUG: API Response data:', res.data);

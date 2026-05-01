@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../api";
 import "../styles/AdminDashboard.css";
 
 const SubscriptionPage = ({ onLogout, darkMode, onToggleTheme }) => {
@@ -16,7 +16,7 @@ const SubscriptionPage = ({ onLogout, darkMode, onToggleTheme }) => {
 
   const fetchPlans = async () => {
     try {
-      const res = await axios.get("http://localhost:7000/api/subscriptions/plans");
+      const res = await api.get("/api/subscriptions/plans");
       if (res.data.success) {
         setPlans(res.data.plans);
       }
@@ -29,9 +29,7 @@ const SubscriptionPage = ({ onLogout, darkMode, onToggleTheme }) => {
 
   const fetchMySubscription = async () => {
     try {
-      const res = await axios.get("http://localhost:7000/api/subscriptions/my-subscription", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const res = await api.get("/api/subscriptions/my-subscription");
       if (res.data.success) {
         setCurrentSubscription(res.data);
       }
@@ -46,8 +44,8 @@ const SubscriptionPage = ({ onLogout, darkMode, onToggleTheme }) => {
     }
 
     try {
-      const res = await axios.post(
-        "http://localhost:7000/api/subscriptions/subscribe",
+      const res = await api.post(
+        "/api/subscriptions/subscribe",
         {
           plan,
           paymentMethod: "manual", // In production, integrate with payment gateway

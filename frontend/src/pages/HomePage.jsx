@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../api";
 import "../styles/HomePage.css";
 
 const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
@@ -36,7 +36,7 @@ const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
   const fetchRestaurants = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:7000/api/restaurants", {
+      const res = await api.get("/api/restaurants", {
         params: { city, cuisine, search, featuredOnly },
       });
       setRestaurants(res.data);
@@ -61,9 +61,7 @@ const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
 
   const checkAdminStatus = async () => {
     try {
-      const res = await axios.get("http://localhost:7000/api/auth/profile", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const res = await api.get("/api/auth/profile");
       setIsAdmin(res.data.isAdmin || false);
     } catch (err) {
       setIsAdmin(false);
@@ -73,8 +71,8 @@ const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
   const handleAddFavorite = async (restaurantId, dealId) => {
     try {
       console.log("Attempting to save favorite:", { restaurantId, dealId });
-      const res = await axios.post(
-        "http://localhost:7000/api/user/favorites",
+      const res = await api.post(
+        "/api/user/favorites",
         { restaurantId, dealId },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -96,8 +94,8 @@ const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
     if (!rating) return alert("Please select a rating");
 
     try {
-      await axios.post(
-        "http://localhost:7000/api/user/reviews",
+      await api.post(
+        "/api/user/reviews",
         { restaurantId, dealId, rating, comment },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -121,8 +119,8 @@ const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
     const reviewKey = `${restaurantId}-${dealId}`;
     setLoadingReviews((prev) => ({ ...prev, [reviewKey]: true }));
     try {
-      const res = await axios.get(
-        `http://localhost:7000/api/user/reviews/restaurant/${restaurantId}/deal/${dealId}`
+      const res = await api.get(
+        `/api/user/reviews/restaurant/${restaurantId}/deal/${dealId}`
       );
       setDealReviews((prev) => ({
         ...prev,
@@ -271,9 +269,7 @@ const HomePage = ({ onLogout, darkMode, onToggleTheme }) => {
     // Check if user has existing preferences
     setLoadingAI(true);
     try {
-      const res = await axios.get("http://localhost:7000/api/user/preferences", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const res = await api.get("/api/user/preferences");
       
       console.log("Preferences check:", res.data);
 
