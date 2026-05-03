@@ -469,8 +469,8 @@ export const uploadDealImage = async (req, res) => {
       return res.status(400).json({ message: "No image file provided" });
     }
 
-    // Return the URL to access the uploaded image
-    const imageUrl = `http://localhost:7000/uploads/images/${req.file.filename}`;
+    // Return URL to access the uploaded image
+    const imageUrl = `${req.protocol}://${req.get('host')}/uploads/images/${req.file.filename}`;
     res.json({ success: true, imageUrl });
   } catch (err) {
     console.error("Error uploading image:", err);
