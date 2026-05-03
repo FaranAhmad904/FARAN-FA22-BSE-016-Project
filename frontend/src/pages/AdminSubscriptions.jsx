@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../api";
 import { useNavigate } from "react-router-dom";
 import "../styles/AdminDashboard.css";
 
@@ -14,9 +14,7 @@ const AdminSubscriptions = ({ onLogout, darkMode, onToggleTheme }) => {
 
   const fetchSubscriptions = async () => {
     try {
-      const res = await axios.get("http://localhost:7000/api/subscriptions/all", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const res = await api.get("/api/subscriptions/all");
       if (res.data.success) {
         setSubscriptions(res.data.subscriptions);
       }
