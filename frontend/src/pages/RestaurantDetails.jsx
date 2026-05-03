@@ -39,6 +39,11 @@ const RestaurantDetails = ({ onLogout, darkMode, onToggleTheme }) => {
     try {
       const res = await api.get("/api/restaurants");
       const foundRestaurant = res.data.find(r => r._id === restaurantId);
+      console.log('DEBUG Restaurant Details:', {
+        foundRestaurant,
+        deals: foundRestaurant?.deals,
+        dealImages: foundRestaurant?.deals?.map(d => ({ title: d.title, image: d.image }))
+      });
       if (foundRestaurant) {
         setRestaurant(foundRestaurant);
       } else {

@@ -36,6 +36,12 @@ const DealDetails = ({ onLogout, darkMode, onToggleTheme }) => {
     try {
       const res = await api.get("/api/restaurants");
       const foundRestaurant = res.data.find(r => r._id === restaurantId);
+      console.log('DEBUG Deal Details:', {
+        foundRestaurant,
+        dealId,
+        allDeals: foundRestaurant?.deals,
+        foundDeal: foundRestaurant?.deals?.find(d => d._id === dealId)
+      });
       if (foundRestaurant) {
         setRestaurant(foundRestaurant);
         const foundDeal = foundRestaurant.deals?.find(d => d._id === dealId);
