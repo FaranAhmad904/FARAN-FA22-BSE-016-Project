@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import "../styles/AdminDashboard.css";
@@ -19,9 +19,7 @@ const AdminAnalytics = ({ onLogout, darkMode, onToggleTheme }) => {
   const fetchAnalytics = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:7000/api/admin/dashboard", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const res = await api.get("/api/admin/dashboard");
       setStats(res.data);
     } catch (err) {
       setStats(null);
@@ -41,9 +39,7 @@ const AdminAnalytics = ({ onLogout, darkMode, onToggleTheme }) => {
     setDrillOpen(true);
     setDrillLoading(true);
     try {
-      const res = await axios.get(`http://localhost:7000/api/admin/dashboard/${restaurantId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      const res = await api.get(`/api/admin/dashboard/${restaurantId}`);
       setDrillData(res.data);
     } catch {
       setDrillData(null);
